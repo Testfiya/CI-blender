@@ -24,8 +24,7 @@ jobs:
 
     steps:
       - name: Clone
-        run: |
-          git clone --branch "$REPO_BRANCH" "$REPO_URL" blender
+        run: git clone --branch "$REPO_BRANCH" "$REPO_URL" blender
 
       - name: Resolve deps paths
         run: |
