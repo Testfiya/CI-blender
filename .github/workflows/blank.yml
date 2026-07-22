@@ -29,16 +29,15 @@ jobs:
           cd blender
           git submodule update --init --remote --recursive
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode.app
-        
-      - name: Install host build tools
-        run: brew install autoconf automake bison dos2unix flex libtool meson ninja pkg-config yasm
+      - name: Resolve deps paths
+        run: |
+          echo "DEPS_HOST_DIR=${{ github.workspace }}/blender/build_darwin/deps_arm64" >> "$GITHUB_ENV"
+          echo "DEPS_IOS_DIR=${{ github.workspace }}/blender/build_ios/deps_arm64" >> "$GITHUB_ENV"
 
       - name: Restore host deps cache
         uses: actions/cache@v4
         with:
-          path: ../build_deps
+          path: ${{ env.DEPS_HOST_DIR }}
           key: make-deps-host-${{ hashFiles('blender/build_files/build_environment/**') }}
           restore-keys: make-deps-host-
 
@@ -49,7 +48,7 @@ jobs:
       - name: Restore iOS deps cache
         uses: actions/cache@v4
         with:
-          path: ../build_deps_ios
+          path: ${{ env.DEPS_IOS_DIR }}
           key: make-deps-ios-${{ hashFiles('blender/build_files/build_environment/**') }}
           restore-keys: make-deps-ios-
 
@@ -63,6 +62,6 @@ jobs:
         with:
           name: make-deps-logs
           path: |
-            ../build_deps/**/*.log
-            ../build_deps_ios/**/*.log
+            ${{ env.DEPS_HOST_DIR }}/**/*.log
+            ${{ env.DEPS_IOS_DIR }}/**/*.log
           retention-days: 7
