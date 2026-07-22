@@ -26,8 +26,6 @@ jobs:
       - name: Clone
         run: |
           git clone --branch "$REPO_BRANCH" "$REPO_URL" blender
-          cd blender
-          git submodule update --init --remote --recursive
 
       - name: Resolve deps paths
         run: |
