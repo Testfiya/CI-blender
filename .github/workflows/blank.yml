@@ -42,12 +42,12 @@ jobs:
         working-directory: blender
         run: make deps
 
-      - name: Restore iOS deps cache
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.DEPS_IOS_DIR }}
-          key: make-deps-ios-${{ hashFiles('blender/build_files/build_environment/**') }}
-          restore-keys: make-deps-ios-
+      # - name: Restore iOS deps cache
+      #   uses: actions/cache@v4
+      #   with:
+      #     path: ${{ env.DEPS_IOS_DIR }}
+      #     key: make-deps-ios-${{ hashFiles('blender/build_files/build_environment/**') }}
+      #     restore-keys: make-deps-ios-
 
       - name: make deps ios
         working-directory: blender
