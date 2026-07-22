@@ -27,6 +27,9 @@ jobs:
 
       - name: Select Xcode
         run: sudo xcode-select -s /Applications/Xcode.app
+        
+      - name: Install host build tools
+        run: brew install autoconf automake bison dos2unix flex libtool meson ninja pkg-config yasm
 
       - name: Restore host deps cache
         uses: actions/cache@v4
