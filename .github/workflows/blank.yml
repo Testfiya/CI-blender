@@ -26,6 +26,9 @@ jobs:
       - name: Clone
         run: git clone --branch "$REPO_BRANCH" "$REPO_URL" blender
 
+      - name: Install host build tools
+        run: brew install autoconf automake bison dos2unix flex libtool meson ninja pkg-config yasm
+
       - name: Resolve deps paths
         run: |
           echo "DEPS_HOST_DIR=${{ github.workspace }}/blender/build_darwin/deps_arm64" >> "$GITHUB_ENV"
