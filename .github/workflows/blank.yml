@@ -1,0 +1,61 @@
+# This is a basic workflow to help you get started with Actions
+
+
+
+name: iOS Superbuild — make deps
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ios-superbuild-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  # TODO: fill in when ready
+  REPO_URL: https://projects.blender.org/blender/blender.git
+  REPO_BRANCH: ios
+
+jobs:
+  make-deps:
+    runs-on: macos-14
+    timeout-minutes: 350
+
+    steps:
+      - name: Clone
+        run: git clone --branch "$REPO_BRANCH" --recursive "$REPO_URL" blender
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app
+
+      - name: Restore host deps cache
+        uses: actions/cache@v4
+        with:
+          path: ../build_deps
+          key: make-deps-host-${{ hashFiles('blender/build_files/build_environment/**') }}
+          restore-keys: make-deps-host-
+
+      - name: make deps (host)
+        working-directory: blender
+        run: make deps
+
+      - name: Restore iOS deps cache
+        uses: actions/cache@v4
+        with:
+          path: ../build_deps_ios
+          key: make-deps-ios-${{ hashFiles('blender/build_files/build_environment/**') }}
+          restore-keys: make-deps-ios-
+
+      - name: make deps ios
+        working-directory: blender
+        run: make deps ios
+
+      - name: Upload logs on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: make-deps-logs
+          path: |
+            ../build_deps/**/*.log
+            ../build_deps_ios/**/*.log
+          retention-days: 7
