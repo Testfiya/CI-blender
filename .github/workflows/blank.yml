@@ -13,8 +13,8 @@ concurrency:
 
 env:
   # TODO: fill in when ready
-  REPO_URL: https://projects.blender.org/blender/blender.git
-  REPO_BRANCH: ios
+  REPO_URL: https://projects.blender.org/Testifya/blender.gitr.git
+  REPO_BRANCH: ios-deps-fix
 
 jobs:
   make-deps:
