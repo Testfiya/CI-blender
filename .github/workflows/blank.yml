@@ -18,7 +18,7 @@ env:
 
 jobs:
   make-deps:
-    runs-on: macos-14
+    runs-on: macos-latest
     timeout-minutes: 350
 
     steps:
